@@ -1,19 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
 import { Description } from '../Description/Description'
-// import { Feedback } from '../Feedback/Feedback'
 import { Options} from '../Options/Options'
 import { Feedback } from '../Feedback/Feedback'
 
 function App() {
-    
-    const [clicks, setClicks] = useState({
-        good: 0,
-	    neutral: 0,
-	    bad: 0
+
+    const [clicks, setClicks] = useState(() => {
+        const savedClicks = window.localStorage.getItem("saved-clicks");
+        if (JSON.parse(savedClicks) !== null) {
+            return JSON.parse(savedClicks);
+        } else {
+            return {
+                good: 0,
+                neutral: 0,
+                bad: 0
+            };
+        }
     })
+
+    useEffect(() => {
+        window.localStorage.setItem("saved-clicks", JSON.stringify(clicks ));
+    }, [clicks]);
+
     const updateGood = () => {
         setClicks({
             ...clicks,
@@ -32,16 +43,42 @@ function App() {
             bad: clicks.bad +1
         })
     }
-    return (
-        <div>
-            <Description></Description>  
-            <Options></Options>
-            <Feedback clicks={ setClicks}></Feedback>
-        </div>
-       
-    );
+    const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
+    const positive = Math.round(((clicks.good + clicks.neutral) / totalFeedback) * 100);
+    const resetFunction = () => {
+        setClicks({
+            good: 0,
+	        neutral: 0,
+	        bad: 0
+        })
+    }
+   
     
- 
+    if (totalFeedback === 0) {
+        return (
+            <div>
+                <Description></Description>
+                <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
+                <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
+                <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
+                <Feedback clicks={clicks} total={totalFeedback}></Feedback>
+            </div>
+       
+        );
+    
+    } else {
+        return (
+            <div>
+                <Description></Description>
+                <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
+                <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
+                <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
+                <Options name="Reset" onUpdate={resetFunction}></Options>
+                <Feedback clicks={clicks} total={totalFeedback} proc={ positive}></Feedback>
+            </div>
+       
+        );
+    }
 }
 
 export default App

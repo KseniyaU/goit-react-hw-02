@@ -1,9 +1,16 @@
-export const Feedback = (clicks) => {
-    return (
-        <div>
-            <p>Good:{clicks.good }</p>
-            <p>Neutral:{ clicks.neutral}</p>
-            <p>Bad:{ clicks.bad}</p>
-        </div>
-    );
+import { Notification } from "../Notification/Notification";
+
+export const Feedback = ({ clicks: { good, neutral, bad }, total, proc }) => {
+    if (total !== 0) {return (
+            <div>
+                <p>Good:{good}</p>
+                <p>Neutral:{neutral}</p>
+                <p>Bad:{bad}</p>
+                <p>Total:{total}</p>
+                <p>Positive:{ proc}%</p>
+            </div>
+        );        
+    } else {
+        return <Notification/>
+    }
 }

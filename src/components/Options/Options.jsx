@@ -1,9 +1,8 @@
-export const Options = () => {
+export const Options = ({ name, onUpdate}) => {
+    
     return (
         <div>
-            <button>Good</button>
-            <button>Neutral</button>
-            <button>Bad</button>          
+            <button onClick={onUpdate}>{name}</button> 
         </div>
     );
 }
