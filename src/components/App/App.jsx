@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import './App.css'
+
+
+import css from '../App/App.module.css'
 import { Description } from '../Description/Description'
 import { Options} from '../Options/Options'
 import { Feedback } from '../Feedback/Feedback'
@@ -40,7 +40,7 @@ function App() {
     const updateBad = () => {
         setClicks({
             ...clicks,
-            bad: clicks.bad +1
+            bad: clicks.bad + 1
         })
     }
     const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
@@ -56,11 +56,13 @@ function App() {
     
     if (totalFeedback === 0) {
         return (
-            <div>
+            <div className={ css.container}>
                 <Description></Description>
-                <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
-                <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
-                <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
+                <div className={css.optionsContainet }>
+                    <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
+                    <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
+                    <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
+                </div>
                 <Feedback clicks={clicks} total={totalFeedback}></Feedback>
             </div>
        
@@ -68,12 +70,14 @@ function App() {
     
     } else {
         return (
-            <div>
+            <div className={ css.container}>
                 <Description></Description>
-                <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
-                <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
-                <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
-                <Options name="Reset" onUpdate={resetFunction}></Options>
+                <div className={css.optionsContainet }>
+                    <Options name="Good" onUpdate={updateGood} total={totalFeedback}></Options>
+                    <Options name="Neutral" onUpdate={updateNeutral} total={totalFeedback}></Options>
+                    <Options name="Bad" onUpdate={updateBad} total={totalFeedback}></Options>
+                    <Options name="Reset" onUpdate={resetFunction}></Options>
+                </div>
                 <Feedback clicks={clicks} total={totalFeedback} proc={ positive}></Feedback>
             </div>
        
